@@ -95,5 +95,17 @@ def add_bookings(mobile_num,room_no,check_in,check_out,guest_count,total_amount)
     conn.close()
     return booking_id
 
+def check_availability(room_type,check_in,check_out):
+    conn=sqlite3.connect("stayeasy.db")
+    cursor=conn.cursor()
 
+    cursor.execute("""select room_no from bookings
+    where booking_status in('confirmed','checked_in')
+    and check_in<?
+    and check_out>?
+    """,(check_out,check_in))
+
+    occupied_rooms=cursor.fetchall()
+    conn.close()
+    return occupied_rooms
     

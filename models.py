@@ -27,8 +27,11 @@ class Standardroom(Room):
         return self.base_price
     def extra_guest_charges(self,guest_count):
         return 0
-    def breakfast(self,guest_count):
-        return guest_count*350
+    def breakfast(self,guest_count,choice):
+        if choice=="yes":
+         return guest_count*350
+        return 0
+    
     
 class Deluxeroom(Room):
     def __init__(self,room_no,room_type,floor):
@@ -64,7 +67,7 @@ class Guest:
         self.set_email(email)
         self.set_mobile_num(mobile_num)
         self.set_guest_count(guest_count)
-        
+
     def set_name(self,name):
         self.__name=name
     def get_name(self):
@@ -90,13 +93,14 @@ class Guest:
         return self.__guest_count
 
 class Booking:
-    def __init__(self,guest,room,check_in,check_out):
+    def __init__(self,guest,room,check_in,check_out,breakfast_choice="no"):
         self.set_guest(guest)
         self.set_room(room)
         self.set_check_in(check_in)
         self.set_check_out(check_out)
         self.__booking_status="confirmed"
         self.__total_amount=0
+        self.calculate_total_amount(breakfast_choice)
 
     def set_booking_id(self,booking_id):
         self.__booking_id=booking_id
@@ -157,6 +161,14 @@ class Booking:
         self.__total_amount=total_amount
     def get_total_amount(self):
         return self.__total_amount
+    def calculate_total_amount(self,breakfast_choice):
+        days=(self.__check_out-self.__check_in).days
+        guest_count=self.__guest.get_guest_count()
+        breakfast_amount=0
+        if isinstance(self.__room,Standardroom):
+            breakfast_amount=self.__room.breakfast(guest_count,breakfast_choice)
+        total=(self.__room.tariff()+self.__room.extra_guest_charges(guest_count)+breakfast_amount)*days
+        self.set_total_amount(total)
     
     def __str__(self):
         return f"Booking ID: {self.__booking_id}, Status: {self.__booking_status}, Total Amount: {self.__total_amount}"
