@@ -1,7 +1,8 @@
 from models import Room,Standardroom,Deluxeroom,Suiteroom,Guest,Booking
-from database import create_tables,load_rooms,add_guest,add_bookings,check_availability,check_in_booking,check_out_booking,count_completed_stays,guest_stay_history,view_booking_details
+from database import create_tables,load_rooms,add_guest,add_bookings,check_availability,check_in_booking,check_out_booking,count_completed_stays,guest_stay_history,view_booking_details,cancel_booking
 import re
 from invoices import generate_invoice
+from reports import occupancy_report
 
 create_tables()
 valid_data=load_rooms()
@@ -137,19 +138,8 @@ def create_booking():
         print(e)
         return
 
-    print("\nBooking Details")
-    print("\nBooking ID:",booking_obj.get_booking_id())
-    print("Guest Name:",guest_obj.get_name())
-    print("Mobile Number:",guest_obj.get_mobile_num())
-    print("Email:",guest_obj.get_email())
-    print("Guest Count:",guest_obj.get_guest_count())
-    print("Room Number:",selected_room.room_no)
-    print("Room Type:",selected_room.room_type)
-    print("Floor:",selected_room.floor)
-    print("Check-in:",booking_obj.get_check_in())
-    print("Check-out:",booking_obj.get_check_out())
-    print("Booking Status:",booking_obj.get_booking_status())
-    print("Total Amount:",booking_obj.get_total_amount())
+    print("\nBooking successful.")
+    
 
 room_obj=[]
 for room in valid_data:
@@ -198,6 +188,18 @@ def check_out():
     if result=="checked-out successfully":
         generate_invoice(booking_id)
         print("Invoice generated successfully.")
+
+def cancel_booking_room():
+    booking_id=input("Enter booking ID:")
+    result=cancel_booking(booking_id)
+
+    if isinstance(result,tuple):
+        refund,retained_amount=result
+        print("Booking cancelled successfully")
+        print("Refund Amount: Rs.",refund)
+        print("Amount Retained: Rs.",retained_amount)
+    else:
+        print(result)
 
 def view_guest_history():
     mobile_num=input("Enter mobile number:")
@@ -261,13 +263,13 @@ while True:
     elif choice=="4":
         check_out()
     elif choice=="5":
-        pass
+        cancel_booking_room()
     elif choice=="6":
         view_booking()
     elif choice=="7":
         view_guest_history()
     elif choice=="8":
-        pass
+        occupancy_report()
     elif choice=="9":
         pass
     elif choice=="10":

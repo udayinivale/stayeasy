@@ -141,6 +141,36 @@ def check_out_booking(booking_id):
     cursor.execute("update bookings set booking_status=? where booking_id=?",("checked_out",booking_id))
     conn.commit()
     return "checked-out successfully"
+def cancel_booking(booking_id):
+    booking_id=booking_id.strip().upper()
+
+    if not booking_id.startswith("BK") or not booking_id[2:].isdigit():
+        return "invalid booking id"
+    booking_id=int(booking_id[2:])
+
+    cursor.execute("select booking_status,check_in,total_amount from bookings where booking_id=?",(booking_id,))
+    result=cursor.fetchone()
+    if result is None:
+        return "no booking id found"
+    booking_status,check_in,total_amount=result
+
+    if booking_status!="confirmed":
+        return "only confirmed bookings can be cancelled"
+
+    from datetime import datetime,date
+    check_in=datetime.strptime(check_in,"%d-%m-%Y").date()
+    days_left=(check_in-date.today()).days
+
+    if days_left>=7:
+        refund=total_amount
+    elif days_left>=2:
+        refund=total_amount*0.50
+    else:
+        refund=0
+    refund_amount=total_amount-refund
+    cursor.execute("update bookings set booking_status=? where booking_id=?",("cancelled",booking_id))
+    conn.commit()
+    return refund,refund_amount
 
 def count_completed_stays(mobile_num):
 
