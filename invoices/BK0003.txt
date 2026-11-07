@@ -1,0 +1,90 @@
+Hotel Invoice
+-----------------------------
+Booking ID: BK0003
+Guest Name: nandu
+Mobile Number: 9908113122
+Email: nandu@gmail.com
+Room Number: 101
+Room Type: standard
+Guest Count: 2
+Check-in: 2026-11-11
+Check-out: 2026-11-20
+Booking Status: checked_out
+-----------------------------
+
+Night-wise Charges
+-----------------------------
+
+Date: 2026-11-11
+Room Charge: Rs.2500.00
+Extra Guest Charge: Rs.0.00
+Breakfast Charge: Rs.700.00
+
+-----------------------------
+
+Date: 2026-11-12
+Room Charge: Rs.2500.00
+Extra Guest Charge: Rs.0.00
+Breakfast Charge: Rs.700.00
+
+-----------------------------
+
+Date: 2026-11-13
+Room Charge: Rs.3000.00
+Extra Guest Charge: Rs.0.00
+Breakfast Charge: Rs.700.00
+
+-----------------------------
+
+Date: 2026-11-14
+Room Charge: Rs.3000.00
+Extra Guest Charge: Rs.0.00
+Breakfast Charge: Rs.700.00
+
+-----------------------------
+
+Date: 2026-11-15
+Room Charge: Rs.2500.00
+Extra Guest Charge: Rs.0.00
+Breakfast Charge: Rs.700.00
+
+-----------------------------
+
+Date: 2026-11-16
+Room Charge: Rs.2500.00
+Extra Guest Charge: Rs.0.00
+Breakfast Charge: Rs.700.00
+
+-----------------------------
+
+Date: 2026-11-17
+Room Charge: Rs.2500.00
+Extra Guest Charge: Rs.0.00
+Breakfast Charge: Rs.700.00
+
+-----------------------------
+
+Date: 2026-11-18
+Room Charge: Rs.2500.00
+Extra Guest Charge: Rs.0.00
+Breakfast Charge: Rs.700.00
+
+-----------------------------
+
+Date: 2026-11-19
+Room Charge: Rs.2500.00
+Extra Guest Charge: Rs.0.00
+Breakfast Charge: Rs.700.00
+
+-----------------------------
+Price Summary
+-----------------------------
+Room Charges: Rs.23500.00
+Extra Guest Charges: Rs.0.00
+Breakfast Charges: Rs.6300.00
+Long Stay Discount: Rs.2350.00
+Loyalty Discount: Rs.0.00
+GST: Rs.3294.00
+-----------------------------
+Total Amount: Rs.30744.00
+-----------------------------

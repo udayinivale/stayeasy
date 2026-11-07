@@ -166,8 +166,8 @@ class Booking:
         return self.__total_amount
     def calculate_total_amount(self,breakfast_choice):
         guest_count=self.__guest.get_guest_count()
-        total=calculate_total_amount(self.__room,guest_count,self.__check_in,self.__check_out,breakfast_choice,self.__completed_stays)
-        self.set_total_amount(total)
+        result=calculate_total_amount(self.__room,guest_count,self.__check_in,self.__check_out,breakfast_choice,self.__completed_stays)
+        self.set_total_amount(result[0])
     
     def __str__(self):
         return f"Booking ID: {self.__booking_id}, Status: {self.__booking_status}, Total Amount: {self.__total_amount}"

@@ -59,4 +59,4 @@ def calculate_total_amount(room,guest_count,check_in,check_out,breakfast_choice=
 
     total=room_total+extra_total+breakfast_total-total_discount+gst_total
 
-    return total
+    return total, room_total, extra_total, breakfast_total, long_stay_discount, loyalty_discount, gst_total, night_charges

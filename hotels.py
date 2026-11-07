@@ -1,6 +1,7 @@
 from models import Room,Standardroom,Deluxeroom,Suiteroom,Guest,Booking
-from database import create_tables,load_rooms,add_guest,add_bookings,check_availability,check_in_booking,check_out_booking,count_completed_stays
+from database import create_tables,load_rooms,add_guest,add_bookings,check_availability,check_in_booking,check_out_booking,count_completed_stays,guest_stay_history,view_booking_details
 import re
+from invoices import generate_invoice
 
 create_tables()
 valid_data=load_rooms()
@@ -126,7 +127,9 @@ def create_booking():
         check_in,
         check_out,
         guest_obj.get_guest_count(),
-        booking_obj.get_total_amount()
+        booking_obj.get_total_amount(),
+        breakfast_choice,
+        completed_stays
         )
         booking_obj.set_booking_id(booking_id)
         
@@ -188,10 +191,49 @@ def check_in():
     print(result)
 
 def check_out():
-    booking_id=input("enter booking id:")
+    booking_id=input("enter booking id:").strip().upper()
     result=check_out_booking(booking_id)
     print(result)
 
+    if result=="checked-out successfully":
+        generate_invoice(booking_id)
+        print("Invoice generated successfully.")
+
+def view_guest_history():
+    mobile_num=input("Enter mobile number:")
+    result=guest_stay_history(mobile_num)
+
+    if not result:
+        print("No stay history found")
+        return
+
+    print("\nGuest Stay History")
+    for row in result:
+        print("Booking ID:",row[0])
+        print("Room Number:",row[1])
+        print("Check-in:",row[2])
+        print("Check-out:",row[3])
+        print("Status:",row[4])
+        print("Total Amount:",row[5])
+        
+def view_booking():
+    booking_id=input("Enter booking ID:")
+    result=view_booking_details(booking_id)
+
+    if result is None:
+        print("Booking not found.")
+    else:
+        print("Booking ID:",f"BK{result[0]:04d}")
+        print("Guest name:",result[1])
+        print("Mobile number:",result[2])
+        print("Email:",result[3])
+        print("Room number:",result[4])
+        print("Room type:",result[5])
+        print("Check-in:",result[6])
+        print("Check-out:",result[7])
+        print("Guest count:",result[8])
+        print("Booking status:",result[9])
+        print("Total amount:",result[10])
                     
     
 while True:
@@ -221,9 +263,9 @@ while True:
     elif choice=="5":
         pass
     elif choice=="6":
-        pass
+        view_booking()
     elif choice=="7":
-        pass
+        view_guest_history()
     elif choice=="8":
         pass
     elif choice=="9":
