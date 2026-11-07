@@ -1,9 +1,9 @@
 import sqlite3
 import csv
-
+conn=sqlite3.connect("stayeasy.db")
+cursor=conn.cursor()
 def create_tables():
-    conn=sqlite3.connect("stayeasy.db")
-    cursor=conn.cursor()
+    
     cursor.execute("""
         create table if not exists rooms(
         room_no int primary key,
@@ -62,8 +62,7 @@ def load_rooms():
 
         for error in errors_file:
                 errors.write(error)
-        conn=sqlite3.connect("stayeasy.db")
-        cursor=conn.cursor()
+        
         for row in valid_data:
             cursor.execute("insert or ignore into rooms values(?,?,?)",
                 (int(row['room_no']),row['room_type'],int(row['floor'])))
@@ -73,9 +72,6 @@ def load_rooms():
     return valid_data
 
 def add_guest(name,mobile_num,email):
-    conn=sqlite3.connect("stayeasy.db")
-    cursor=conn.cursor()
-    
     cursor.execute("insert or ignore into guests values(?,?,?)",
                 (name,mobile_num,email))
     conn.commit()
@@ -96,8 +92,6 @@ def add_bookings(mobile_num,room_no,check_in,check_out,guest_count,total_amount)
     return booking_id
 
 def check_availability(room_type,check_in,check_out):
-    conn=sqlite3.connect("stayeasy.db")
-    cursor=conn.cursor()
 
     cursor.execute("""select room_no from bookings
     where booking_status in('confirmed','checked_in')
@@ -108,4 +102,47 @@ def check_availability(room_type,check_in,check_out):
     occupied_rooms=cursor.fetchall()
     conn.close()
     return occupied_rooms
+
+def check_in_booking(booking_id):
     
+    booking_id=booking_id.strip().upper()
+    if not booking_id.startswith("BK") or not booking_id[2:].isdigit():
+        conn.close()
+        return "invalid booking id"
+    booking_id=int(booking_id[2:])
+    cursor.execute("select booking_status from bookings where booking_id=?",(booking_id,))
+    result=cursor.fetchone()
+    if result is None:
+        print("no booking id found")
+    if result[0]!="confirmed":
+        conn.close()
+        return "cannot check in."
+    cursor.execute("update bookings set booking_status=? where booking_id=?",("checked_in",booking_id))
+    conn.commit()
+    return "checked-in successfully"
+
+def check_out_booking(booking_id):
+    
+    booking_id=booking_id.strip().upper()
+    if not booking_id.startswith("BK") or not booking_id[2:].isdigit():
+        conn.close()
+        return "invalid booking id"
+    booking_id=int(booking_id[2:])
+    cursor.execute("select booking_status from bookings where booking_id=?",(booking_id,))
+    result=cursor.fetchone()
+    if result is None:
+        print("no booking id found")
+    if result[0]!="checked_in":
+        conn.close()
+        return "cannot check out."
+    cursor.execute("update bookings set booking_status=? where booking_id=?",("checked_out",booking_id))
+    conn.commit()
+    return "checked-out successfully"
+
+def count_completed_stays(mobile_num):
+
+    cursor.execute("select count(*) from bookings where mobile_num=? and booking_status='checked_out'",(mobile_num,))
+    result=cursor.fetchone()
+    conn.close()
+    return result[0]
+

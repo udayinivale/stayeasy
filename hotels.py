@@ -1,5 +1,5 @@
 from models import Room,Standardroom,Deluxeroom,Suiteroom,Guest,Booking
-from database import create_tables,load_rooms,add_guest,add_bookings,check_availability
+from database import create_tables,load_rooms,add_guest,add_bookings,check_availability,check_in_booking,check_out_booking,count_completed_stays
 import re
 
 create_tables()
@@ -64,6 +64,7 @@ def rooms_available(room_type,check_in,check_out):
 
 def create_booking():
     guest_obj=guest_registration()
+    completed_stays=count_completed_stays(guest_obj.get_mobile_num())
     check_in=input("Enter check-in date:")
     check_out=input("Enter check-out date:")
     room_type=input("enter room type:").lower().strip()
@@ -118,7 +119,7 @@ def create_booking():
             selected_room=room
 
     try:
-        booking_obj=Booking(guest_obj,selected_room,check_in,check_out,breakfast_choice)
+        booking_obj=Booking(guest_obj,selected_room,check_in,check_out,breakfast_choice,completed_stays)
         booking_id=add_bookings(
         guest_obj.get_mobile_num(),
         selected_room.room_no,
@@ -128,11 +129,13 @@ def create_booking():
         booking_obj.get_total_amount()
         )
         booking_obj.set_booking_id(booking_id)
+        
     except ValueError as e:
         print(e)
         return
 
     print("\nBooking Details")
+    print("\nBooking ID:",booking_obj.get_booking_id())
     print("Guest Name:",guest_obj.get_name())
     print("Mobile Number:",guest_obj.get_mobile_num())
     print("Email:",guest_obj.get_email())
@@ -179,12 +182,16 @@ def search_availability():
     print("Total available rooms:",len(available_rooms))
     print("Maximum guests allowed:",max_guests[room_type])
 
+def check_in():
+    booking_id=input("enter booking id:")
+    result=check_in_booking(booking_id)
+    print(result)
 
+def check_out():
+    booking_id=input("enter booking id:")
+    result=check_out_booking(booking_id)
+    print(result)
 
-
-
-
-   
                     
     
 while True:
@@ -208,9 +215,9 @@ while True:
     elif choice=="2":
         create_booking()
     elif choice=="3":
-        pass
+        check_in()
     elif choice=="4":
-        pass
+        check_out()
     elif choice=="5":
         pass
     elif choice=="6":

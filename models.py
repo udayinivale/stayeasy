@@ -1,5 +1,6 @@
 from abc import ABC,abstractmethod
 from datetime import datetime,date
+from pricing import calculate_total_amount
 
 class Room(ABC):
     def __init__(self,room_no,room_type,floor):
@@ -93,14 +94,16 @@ class Guest:
         return self.__guest_count
 
 class Booking:
-    def __init__(self,guest,room,check_in,check_out,breakfast_choice="no"):
+    def __init__(self,guest,room,check_in,check_out,breakfast_choice="no",completed_stays=0):
         self.set_guest(guest)
         self.set_room(room)
         self.set_check_in(check_in)
         self.set_check_out(check_out)
         self.__booking_status="confirmed"
         self.__total_amount=0
+        self.__completed_stays=completed_stays
         self.calculate_total_amount(breakfast_choice)
+        
 
     def set_booking_id(self,booking_id):
         self.__booking_id=booking_id
@@ -162,12 +165,8 @@ class Booking:
     def get_total_amount(self):
         return self.__total_amount
     def calculate_total_amount(self,breakfast_choice):
-        days=(self.__check_out-self.__check_in).days
         guest_count=self.__guest.get_guest_count()
-        breakfast_amount=0
-        if isinstance(self.__room,Standardroom):
-            breakfast_amount=self.__room.breakfast(guest_count,breakfast_choice)
-        total=(self.__room.tariff()+self.__room.extra_guest_charges(guest_count)+breakfast_amount)*days
+        total=calculate_total_amount(self.__room,guest_count,self.__check_in,self.__check_out,breakfast_choice,self.__completed_stays)
         self.set_total_amount(total)
     
     def __str__(self):
