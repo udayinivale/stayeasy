@@ -52,3 +52,19 @@ def occupancy_report():
         print("Average Occupancy:",round(average_occupancy,2),"%")
     else:
         print("No dates available for the report")
+
+def revenue_report():
+    cursor.execute("""
+    select r.room_type,count(*),sum(b.room_revenue),sum(b.gst_amount)
+    from bookings b
+    join rooms r on b.room_no=r.room_no
+    where b.booking_status='checked_out'
+    group by r.room_type
+    """)
+    result=cursor.fetchall()
+    for room_type,completed_stays,room_revenue,gst_amount in result:
+        print("Room Type:",room_type)
+        print("Completed Stays:",completed_stays)
+        print("Room Revenue:",room_revenue)
+        print("Gst collected:",gst_amount)
+        print("----------------------")

@@ -1,0 +1,90 @@
+Hotel Invoice
+-----------------------------
+Booking ID: BK0006
+Guest Name: bunny
+Mobile Number: 6789054321
+Email: bunny@gmail.com
+Room Number: 302
+Room Type: suite
+Guest Count: 4
+Check-in: 2026-11-11
+Check-out: 2026-11-20
+Booking Status: checked_out
+-----------------------------
+
+Night-wise Charges
+-----------------------------
+
+Date: 2026-11-11
+Room Charge: Rs.7500.00
+Extra Guest Charge: Rs.1600.00
+Breakfast Charge: Rs.0.00
+
+-----------------------------
+
+Date: 2026-11-12
+Room Charge: Rs.7500.00
+Extra Guest Charge: Rs.1600.00
+Breakfast Charge: Rs.0.00
+
+-----------------------------
+
+Date: 2026-11-13
+Room Charge: Rs.9000.00
+Extra Guest Charge: Rs.1600.00
+Breakfast Charge: Rs.0.00
+
+-----------------------------
+
+Date: 2026-11-14
+Room Charge: Rs.9000.00
+Extra Guest Charge: Rs.1600.00
+Breakfast Charge: Rs.0.00
+
+-----------------------------
+
+Date: 2026-11-15
+Room Charge: Rs.7500.00
+Extra Guest Charge: Rs.1600.00
+Breakfast Charge: Rs.0.00
+
+-----------------------------
+
+Date: 2026-11-16
+Room Charge: Rs.7500.00
+Extra Guest Charge: Rs.1600.00
+Breakfast Charge: Rs.0.00
+
+-----------------------------
+
+Date: 2026-11-17
+Room Charge: Rs.7500.00
+Extra Guest Charge: Rs.1600.00
+Breakfast Charge: Rs.0.00
+
+-----------------------------
+
+Date: 2026-11-18
+Room Charge: Rs.7500.00
+Extra Guest Charge: Rs.1600.00
+Breakfast Charge: Rs.0.00
+
+-----------------------------
+
+Date: 2026-11-19
+Room Charge: Rs.7500.00
+Extra Guest Charge: Rs.1600.00
+Breakfast Charge: Rs.0.00
+
+-----------------------------
+Price Summary
+-----------------------------
+Room Charges: Rs.70500.00
+Extra Guest Charges: Rs.14400.00
+Breakfast Charges: Rs.0.00
+Long Stay Discount: Rs.7050.00
+Loyalty Discount: Rs.0.00
+GST: Rs.10506.00
+-----------------------------
+Total Amount: Rs.88356.00
+-----------------------------

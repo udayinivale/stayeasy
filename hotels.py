@@ -2,7 +2,7 @@ from models import Room,Standardroom,Deluxeroom,Suiteroom,Guest,Booking
 from database import create_tables,load_rooms,add_guest,add_bookings,check_availability,check_in_booking,check_out_booking,count_completed_stays,guest_stay_history,view_booking_details,cancel_booking
 import re
 from invoices import generate_invoice
-from reports import occupancy_report
+from reports import occupancy_report,revenue_report
 
 create_tables()
 valid_data=load_rooms()
@@ -123,14 +123,16 @@ def create_booking():
     try:
         booking_obj=Booking(guest_obj,selected_room,check_in,check_out,breakfast_choice,completed_stays)
         booking_id=add_bookings(
-        guest_obj.get_mobile_num(),
-        selected_room.room_no,
-        check_in,
-        check_out,
-        guest_obj.get_guest_count(),
-        booking_obj.get_total_amount(),
-        breakfast_choice,
-        completed_stays
+            guest_obj.get_mobile_num(),
+            selected_room.room_no,
+            check_in,
+            check_out,
+            guest_obj.get_guest_count(),
+            booking_obj.get_total_amount(),
+            breakfast_choice,
+            completed_stays,
+            booking_obj.get_room_revenue(),
+            booking_obj.get_gst_amount()
         )
         booking_obj.set_booking_id(booking_id)
         
@@ -211,7 +213,7 @@ def view_guest_history():
 
     print("\nGuest Stay History")
     for row in result:
-        print("Booking ID:",row[0])
+        print("Booking ID:",f"BK{row[0]:04d}")
         print("Room Number:",row[1])
         print("Check-in:",row[2])
         print("Check-out:",row[3])
@@ -271,7 +273,7 @@ while True:
     elif choice=="8":
         occupancy_report()
     elif choice=="9":
-        pass
+        revenue_report()
     elif choice=="10":
         pass
     elif choice=="11":

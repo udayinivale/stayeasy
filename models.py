@@ -101,6 +101,8 @@ class Booking:
         self.set_check_out(check_out)
         self.__booking_status="confirmed"
         self.__total_amount=0
+        self.__room_revenue=0
+        self.__gst_amount=0
         self.__completed_stays=completed_stays
         self.calculate_total_amount(breakfast_choice)
         
@@ -164,10 +166,16 @@ class Booking:
         self.__total_amount=total_amount
     def get_total_amount(self):
         return self.__total_amount
+    def get_room_revenue(self):
+        return self.__room_revenue
+    def get_gst_amount(self):
+        return self.__gst_amount
     def calculate_total_amount(self,breakfast_choice):
         guest_count=self.__guest.get_guest_count()
         result=calculate_total_amount(self.__room,guest_count,self.__check_in,self.__check_out,breakfast_choice,self.__completed_stays)
         self.set_total_amount(result[0])
+        self.__room_revenue=result[1]
+        self.__gst_amount=result[6]
     
     def __str__(self):
         return f"Booking ID: {self.__booking_id}, Status: {self.__booking_status}, Total Amount: {self.__total_amount}"

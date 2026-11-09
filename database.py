@@ -31,9 +31,16 @@ def create_tables():
         completed_stays int,
         booking_status text,
         total_amount real,
+        room_revenue real,
+        gst_amount real,
+    
         foreign key(mobile_num) references guests(mobile_num),
         foreign key(room_no) references rooms(room_no))
         """)
+    conn.commit()
+    # cursor.execute("ALTER TABLE bookings ADD COLUMN room_revenue real")
+    # cursor.execute("ALTER TABLE bookings ADD COLUMN gst_amount real")
+    # cursor.execute("ALTER TABLE bookings ADD COLUMN retained_amount real")
     conn.commit()
    
 
@@ -82,18 +89,17 @@ def add_guest(name,mobile_num,email):
     conn.commit()
     
 
-def add_bookings(mobile_num,room_no,check_in,check_out,guest_count,total_amount,breakfast_choice,completed_stays):
+def add_bookings(mobile_num,room_no,check_in,check_out,guest_count,total_amount,breakfast_choice,completed_stays,room_revenue,gst_amount):
     conn=sqlite3.connect("stayeasy.db")
     cursor=conn.cursor()
     
     cursor.execute("""
-    insert into bookings(mobile_num,room_no,check_in,check_out,guest_count,booking_status,total_amount,breakfast_choice,completed_stays)
-    values(?,?,?,?,?,?,?,?,?)""",
-    (mobile_num,room_no,check_in,check_out,guest_count,"confirmed",total_amount,breakfast_choice,completed_stays))
+    insert into bookings(mobile_num,room_no,check_in,check_out,guest_count,booking_status,total_amount,breakfast_choice,completed_stays,room_revenue,gst_amount)
+    values(?,?,?,?,?,?,?,?,?,?,?)""",
+    (mobile_num,room_no,check_in,check_out,guest_count,"confirmed",total_amount,breakfast_choice,completed_stays,room_revenue,gst_amount))
     last_id=cursor.lastrowid
     booking_id=f"BK{last_id:04d}"
     conn.commit()
-   
     return booking_id
 
 def check_availability(room_type,check_in,check_out):
@@ -103,16 +109,13 @@ def check_availability(room_type,check_in,check_out):
     and check_in<?
     and check_out>?
     """,(check_out,check_in))
-
     occupied_rooms=cursor.fetchall()
-   
     return occupied_rooms
 
 def check_in_booking(booking_id):
     
     booking_id=booking_id.strip().upper()
     if not booking_id.startswith("BK") or not booking_id[2:].isdigit():
-        conn.close()
         return "invalid booking id"
     booking_id=int(booking_id[2:])
     cursor.execute("select booking_status from bookings where booking_id=?",(booking_id,))
@@ -120,7 +123,6 @@ def check_in_booking(booking_id):
     if result is None:
         print("no booking id found")
     if result[0]!="confirmed":
-        conn.close()
         return "cannot check in."
     cursor.execute("update bookings set booking_status=? where booking_id=?",("checked_in",booking_id))
     conn.commit()
@@ -141,6 +143,7 @@ def check_out_booking(booking_id):
     cursor.execute("update bookings set booking_status=? where booking_id=?",("checked_out",booking_id))
     conn.commit()
     return "checked-out successfully"
+
 def cancel_booking(booking_id):
     booking_id=booking_id.strip().upper()
 
@@ -168,7 +171,7 @@ def cancel_booking(booking_id):
     else:
         refund=0
     refund_amount=total_amount-refund
-    cursor.execute("update bookings set booking_status=? where booking_id=?",("cancelled",booking_id))
+    cursor.execute("update bookings set booking_status=?,retained_amount=? where booking_id=?",("cancelled",refund_amount,booking_id))   
     conn.commit()
     return refund,refund_amount
 
