@@ -1,5 +1,5 @@
 from models import Room,Standardroom,Deluxeroom,Suiteroom,Guest,Booking
-from database import create_tables,load_rooms,add_guest,add_bookings,check_availability,check_in_booking,check_out_booking,count_completed_stays,guest_stay_history,view_booking_details,cancel_booking
+from database import create_tables,load_rooms,add_guest,add_bookings,check_availability,check_in_booking,check_out_booking,count_completed_stays,guest_stay_history,view_booking_details,cancel_booking,export_bookings
 import re
 from invoices import generate_invoice
 from reports import occupancy_report,revenue_report
@@ -275,7 +275,7 @@ while True:
     elif choice=="9":
         revenue_report()
     elif choice=="10":
-        pass
+        export_bookings()
     elif choice=="11":
         print("Thank you!" \
               "visit again..")

@@ -1,0 +1,7 @@
+Booking ID,Guest Name,Mobile Number,Email,Room Number,Room Type,Check-in,Check-out,Guest Count,Booking Status,Total Amount,Breakfast,Completed Stays,Room Revenue,GST Amount,Retained Amount
+BK0001,udayini,8187879394,uday@gmail.com,201,Deluxe,12-11-2026,20-11-2026,3,checked_out,41036.8,no,0,,,
+BK0002,shravan,9912527568,shravan@gmail.com,101,Standard,10-11-2026,15-11-2026,2,checked_out,19040.0,yes,0,,,
+BK0003,nandu,9908113122,nandu@gmail.com,101,Standard,11-11-2026,20-11-2026,2,checked_out,30744.0,yes,0,,,
+BK0004,bunny,8008528833,bunny@gmail.com,301,Suite,20-11-2026,26-11-2026,4,cancelled,65784.0,no,0,,,
+BK0005,udayini,8187879394,uday@gmail.com,301,Suite,11-11-2026,18-11-2026,4,cancelled,69652.0,no,1,55500.0,8502.0,34826.0
+BK0006,bunny,6789054321,bunny@gmail.com,302,Suite,11-11-2026,20-11-2026,4,checked_out,88356.0,no,0,70500.0,10506.0,

@@ -209,3 +209,32 @@ def view_booking_details(booking_id):
     """,(booking_id,))
     result=cursor.fetchone()
     return result
+
+def export_bookings():
+    cursor.execute("""
+    select b.booking_id,g.name,g.mobile_num,g.email,
+    b.room_no,r.room_type,b.check_in,b.check_out,
+    b.guest_count,b.booking_status,b.total_amount,
+    b.breakfast_choice,b.completed_stays,
+    b.room_revenue,b.gst_amount,b.retained_amount
+    from bookings b
+    join guests g on b.mobile_num=g.mobile_num
+    join rooms r on b.room_no=r.room_no
+    order by b.booking_id
+    """)
+    result=cursor.fetchall()
+
+    with open("bookings.csv","w",newline="") as file:
+        writer=csv.writer(file)
+        writer.writerow([
+            "Booking ID","Guest Name","Mobile Number","Email",
+            "Room Number","Room Type","Check-in","Check-out",
+            "Guest Count","Booking Status","Total Amount",
+            "Breakfast","Completed Stays","Room Revenue",
+            "GST Amount","Retained Amount"
+        ])
+        for row in result:
+            row=list(row)
+            row[0]=f"BK{row[0]:04d}"
+            writer.writerow(row)
+    print("Bookings exported successfully.")
