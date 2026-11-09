@@ -3,6 +3,7 @@ from database import create_tables,load_rooms,add_guest,add_bookings,check_avail
 import re
 from invoices import generate_invoice
 from reports import occupancy_report,revenue_report
+from menu import show_menu
 
 create_tables()
 valid_data=load_rooms()
@@ -11,7 +12,7 @@ valid_data=load_rooms()
 def guest_registration():
     try:
         while True:
-            name=input("enter the guest_name:").lower().strip()
+            name=input("enter the guest name:").lower().strip()
             if name=="":
                 print("name cannot be empty")
                 continue
@@ -240,46 +241,4 @@ def view_booking():
         print("Total amount:",result[10])
                     
     
-while True:
-    print("""
-            1.search availability
-            2.create booking
-            3.check in
-            4.check out
-            5.cancel booking
-            6.view booking details
-            7.guest stay history
-            8.occupancy report
-            9.revenue report
-            10.export bookings
-            11.exit
-    """)
-    choice=input("Enter your choice:")
-
-    if choice=="1":
-        search_availability()
-    elif choice=="2":
-        create_booking()
-    elif choice=="3":
-        check_in()
-    elif choice=="4":
-        check_out()
-    elif choice=="5":
-        cancel_booking_room()
-    elif choice=="6":
-        view_booking()
-    elif choice=="7":
-        view_guest_history()
-    elif choice=="8":
-        occupancy_report()
-    elif choice=="9":
-        revenue_report()
-    elif choice=="10":
-        export_bookings()
-    elif choice=="11":
-        print("Thank you!" \
-              "visit again..")
-        break
-    else:
-        print("Invalid choice")
-    
+show_menu(search_availability, create_booking, check_in, check_out, cancel_booking_room, view_booking, view_guest_history, occupancy_report, revenue_report, export_bookings)
